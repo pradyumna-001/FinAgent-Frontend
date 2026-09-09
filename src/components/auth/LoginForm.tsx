@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/authStore'
 import { useUIStore } from '@/stores/uiStore';
 import axios from 'axios';
 
-export function LoginForm() {
+export function LoginForm({ onSuccess }: { onSuccess: () =>  void}) {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
     });
@@ -15,6 +15,7 @@ export function LoginForm() {
     const onSubmit = handleSubmit(async (values) => {
         try {
             await login(values.email, values.password);
+            onSuccess();
         } catch (error) {
             const message =
                 axios.isAxiosError(error) && error.response?.data?.message

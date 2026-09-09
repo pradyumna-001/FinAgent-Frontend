@@ -6,7 +6,7 @@ import axios from 'axios'
 import { getMe } from '@/api/auth'
 
 
-interface AuthState {
+export interface AuthState {
     accessToken: string | null
     manager: Manager | null
     isLoading: boolean

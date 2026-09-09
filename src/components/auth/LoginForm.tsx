@@ -2,25 +2,18 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginFormValues } from '@/schemas/login'
 import { useAuthStore } from '@/stores/authStore'
-import { useUIStore } from '@/stores/uiStore';
-import axios from 'axios';
 
 export function LoginForm() {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
     });
     const login = useAuthStore((state) => state.login);
-    const addToast = useUIStore((state) => state.addToast);
 
     const onSubmit = handleSubmit(async (values) => {
         try {
             await login(values.email, values.password);
-        } catch (error) {
-            const message =
-                axios.isAxiosError(error) && error.response?.data?.message
-                    ? error.response.data.message
-                    : 'Sign in failed';
-            addToast('error', message);
+        } catch {
+            // TODO(#014): surface error via toast
         }
     });
 

@@ -70,4 +70,12 @@ describe('AuthProvider', () => {
         });
     });
     
+    it('calls checkAuth (getMe) on mount', async () => {
+        (apiGetMe as ReturnType<typeof vi.fn>).mockResolvedValue({ id: 1, name: 'P', email: 'a@b.co' });
+        renderHarness();
+        await waitFor(() => {
+            expect(useAuthStore.getState().manager).toEqual({ id: 1, name: 'P', email: 'a@b.co' });
+        });
+        expect(apiGetMe).toHaveBeenCalled();
+    });
 });

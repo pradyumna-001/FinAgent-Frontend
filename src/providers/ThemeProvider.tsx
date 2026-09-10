@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useEffect, useLayoutEffect,useState } from 'react';
 
 export type Theme = 'light' | 'dark' | 'system';
 
@@ -29,6 +29,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         setSystemDark(mql.matches);
         mql.addEventListener('change', onChange);
         return () => mql.removeEventListener('change', onChange);
+    }, [theme]);
+
+    useLayoutEffect(() => {
+        document.documentElement.classList.toggle('dark', resolvedTheme === 'dark');
+        document.documentElement.style.colorScheme = resolvedTheme;
+    }, [resolvedTheme]);
+
+    useEffect(() => {
+        localStorage.setItem(STORAGE_KEY, theme);
     }, [theme]);
 
     return (

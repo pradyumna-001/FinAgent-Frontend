@@ -35,7 +35,7 @@ export class ApiError {
         const data = error.response.data as {
             code?: string;
             message?: string;
-            details?: Record<string, string[]>;
+            details?: Record<string, string[]> | null;
             timestamp?: string;
             path?: string;
             detail?: string;
@@ -43,8 +43,9 @@ export class ApiError {
 
         const code = data.code ?? (status >= 500 ? 'INTERNAL_ERROR' : (STATUS_CODE_FALLBACK[status] ?? 'UNKNOWN'));
         const message = data.message ?? (typeof data.detail === 'string' ? data.detail : 'Request failed');
+        const details = data.details ?? undefined;
 
-        return new ApiError(status, code, message, data.details, data.timestamp, data.path);
+        return new ApiError(status, code, message, details, data.timestamp, data.path);
     }
 
     get isRetryable() {

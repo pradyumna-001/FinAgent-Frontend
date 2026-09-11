@@ -68,4 +68,10 @@ describe('ApiError', () => {
         expect(err.code).toBe('NOT_FOUND');
         expect(err.message).toBe('Not Found');
     });
+
+    it('normalizes a null details to undefined', () => {
+        const err = ApiError.fromResponse(httpError(401, { code: 'UNAUTHORIZED', details: null }));
+
+        expect(err.details).toBeUndefined();
+    });
 });

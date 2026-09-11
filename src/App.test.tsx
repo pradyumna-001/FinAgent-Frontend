@@ -58,7 +58,7 @@ describe('App', () => {
     it('renders a toast when added', async () => {
         useUIStore.getState().addToast({ type: 'success', message: 'Saved' });
         renderApp();
-        expect(screen.getByRole('alert')).toBeInTheDocument();
+        expect(screen.getByRole('status')).toBeInTheDocument();
         expect(screen.getByText('Saved')).toBeInTheDocument();
         await waitFor(() => expect(getMe).toHaveBeenCalled());
     });

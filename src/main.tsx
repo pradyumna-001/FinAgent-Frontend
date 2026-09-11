@@ -4,6 +4,7 @@ import { QueryProvider } from './providers/QueryProvider';
 import { RouterProvider } from 'react-router-dom';
 import { AuthProvider } from './providers/AuthProvider';
 import { ThemeProvider } from './providers/ThemeProvider';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
 import { Toaster } from './components/ui/toaster/Toaster';
 import { router } from './router';
 import './index.css';
@@ -13,7 +14,9 @@ createRoot(document.getElementById('root')!).render(
     <QueryProvider>
       <AuthProvider>
         <ThemeProvider>
-          <RouterProvider router={router} />
+          <ErrorBoundary>
+            <RouterProvider router={router} />
+          </ErrorBoundary>
           <Toaster />
         </ThemeProvider>
       </AuthProvider>
